@@ -5,29 +5,68 @@ using System.Collections.Generic;
 public class Master : MonoBehaviour {
 	public CellsGrid grid;
 
-	public Block[] blocks;
+	public Transform[] Positions;
+	public GameObject[] Prefaps;
+
+	List<BlockGroup> blocks;
 
 	void Start () {
 		grid.PopulateGrid ();
+
+		blocks = new List<BlockGroup> ();
+		PopulateBlocks ();
+	}
+
+	void PopulateBlocks(){
+		for (int i = 0; i < Positions.Length; i++) {
+			blocks.Add ((Instantiate (Prefaps [Random.Range (0, Prefaps.Length)], Positions [i].position, Quaternion.identity) as GameObject).GetComponent<BlockGroup> ());
+		}
 
 		foreach (var block in blocks)
 			block.GetComponent<Draggable> ().onDragEnded += CheckForDrag;
 	}
 
 	bool CheckForDrag(Draggable drag, DropZone dropedOn){
-		if (dropedOn.Done == false) {
-			Color c = drag.GetComponent<Block> ().color;
-			dropedOn.GetComponent<BoxCell> ().SetColor (c);
-			Destroy (drag.gameObject);
+		BlockGroup group = drag.GetComponent<BlockGroup> ();
 
-			DoneDragging ();
-			return true;
+		if (group == null)
+			return false;
+
+		foreach(DropZone d in group.GetAnyBlock().draggable.dropZones){
+			if(CanDropHere(group, d)){
+				DropHere (group, d);
+
+				blocks.Remove (group);
+				Destroy (drag.gameObject);
+
+				DoneDragging ();
+				return true;
+			}
 		}
 		return false;
 	}
 
+	bool CanDropHere(BlockGroup group, DropZone dropenOn){
+		BoxCell cellDropenOn = dropenOn.GetComponent<BoxCell>();
+		foreach (var position in group.positions) {
+			if ((grid.GetCell (cellDropenOn.coord + position) as BoxCell).HasColor)
+				return false;
+		}
+		return true;
+	}
+
+	void DropHere(BlockGroup group, DropZone dropenOn){
+		BoxCell cellDropenOn = dropenOn.GetComponent<BoxCell>();
+		foreach (var position in group.positions) {
+			(grid.GetCell (cellDropenOn.coord + position) as BoxCell).SetColor (group.color);
+		}
+	}
+
+	#region GamePlayedCheck
 	void DoneDragging(){
 		ClearSolvedRowsAndColumns ();
+		if (blocks.Count == 0)
+			PopulateBlocks ();
 	}
 
 	void ClearSolvedRowsAndColumns(){
@@ -91,4 +130,5 @@ public class Master : MonoBehaviour {
 			(grid.Cells [x, y] as BoxCell).Reset ();
 		}
 	}
+	#endregion GamePlayedCheck
 }
