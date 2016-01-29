@@ -17,9 +17,13 @@ public class BoxCell : Cell {
 		dropZone.Done = true;
 	}
 
-	public void Reset(){
-		spR.color = Color.white;
+	public void Reset(float delay){
+		Invoke ("ResetColor", delay + 0.1f);
 		HasColor = false;
 		dropZone.Done = false;
+	}
+
+	void ResetColor(){
+		spR.color = Color.white;
 	}
 }

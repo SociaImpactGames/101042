@@ -46,15 +46,44 @@ public class Master : MonoBehaviour {
 		return false;
 	}
 
+	bool ValidateBlocks(){
+		foreach (var block in blocks) {
+			if (HasPlace (block))
+				return true;
+		}
+		return false;
+	}
+
+	//TODO: Move From Here
+	bool HasPlace(BlockGroup group){
+		for (int x = 0; x < grid.GetMap ().size.x; x++) {
+			for (int y = 0; y < grid.GetMap ().size.y; y++) {
+				if(CanDropHere(group, (BoxCell) grid.GetCell(new Coord(x,y))))
+					return true;
+			}
+		}
+
+		return false;
+	}
+
+	//TODO: Move From Here
 	bool CanDropHere(BlockGroup group, DropZone dropenOn){
 		BoxCell cellDropenOn = dropenOn.GetComponent<BoxCell>();
+		return CanDropHere (group, cellDropenOn);
+	}
+
+	//TODO: Move From Here
+	bool CanDropHere(BlockGroup group, BoxCell cell){
 		foreach (var position in group.positions) {
-			if ((grid.GetCell (cellDropenOn.coord + position) as BoxCell).HasColor)
+			BoxCell boxCell = ( grid.GetCell (cell.coord + position) as BoxCell );
+
+			if (boxCell == null || boxCell.HasColor)
 				return false;
 		}
 		return true;
 	}
 
+	// Refactor
 	void DropHere(BlockGroup group, DropZone dropenOn){
 		BoxCell cellDropenOn = dropenOn.GetComponent<BoxCell>();
 		foreach (var position in group.positions) {
@@ -62,11 +91,17 @@ public class Master : MonoBehaviour {
 		}
 	}
 
+	//TODO: Move it from here to Grid !
 	#region GamePlayedCheck
 	void DoneDragging(){
 		ClearSolvedRowsAndColumns ();
 		if (blocks.Count == 0)
 			PopulateBlocks ();
+		else {
+			if (ValidateBlocks () == false) {
+				Debug.Log ("Game Over");
+			}
+		}
 	}
 
 	void ClearSolvedRowsAndColumns(){
@@ -109,25 +144,14 @@ public class Master : MonoBehaviour {
 	}
 
 	void ClearRow(int y){
-		StartCoroutine (ClearRowCoroutine (y));
-
-	}
-
-	void ClearColumn(int x){
-		StartCoroutine (ClearColCoroutine (x));
-	}
-
-	IEnumerator ClearRowCoroutine(int y){
 		for (int x = 0; x < grid.GetMap ().size.x; x++) {
-			yield return new WaitForSeconds(0.05f);
-			(grid.Cells [x, y] as BoxCell).Reset ();
+			(grid.Cells [x, y] as BoxCell).Reset (x * 0.05f);
 		}
 	}
 
-	IEnumerator ClearColCoroutine(int x){
+	void ClearColumn(int x){
 		for (int y = 0; y < grid.GetMap ().size.y; y++) {
-			yield return new WaitForSeconds(0.05f);
-			(grid.Cells [x, y] as BoxCell).Reset ();
+			(grid.Cells [x, y] as BoxCell).Reset (y * 0.05f);
 		}
 	}
 	#endregion GamePlayedCheck
