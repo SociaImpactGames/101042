@@ -38,4 +38,8 @@ public class Master : MonoBehaviour {
 	public void NoPlayAvailable(){
 		Invoke ("Reset", 1);
 	}
+
+	public void Home(){
+		UnityEngine.SceneManagement.SceneManager.LoadScene ("Home");
+	}
 }
