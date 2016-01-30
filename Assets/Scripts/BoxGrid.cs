@@ -35,6 +35,9 @@ public class BoxGrid : CellsGrid {
 			}
 		}
 
+		if (OnColumsAndRowsCleared != null)
+			OnColumsAndRowsCleared (RowsToClear.Count + ColumnsToClear.Count);
+
 		foreach (int y in RowsToClear)
 			ClearRow (y);
 
@@ -59,4 +62,6 @@ public class BoxGrid : CellsGrid {
 			ClearColumn (x);
 		}
 	}
+
+	public System.Action<int> OnColumsAndRowsCleared;
 }

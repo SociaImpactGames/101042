@@ -10,6 +10,11 @@ public class GamePlayMaster : MonoBehaviour {
 	void Start () {
 		grid.PopulateGrid ();
 		blocksContainer.onDragEnded += CheckForDrag;
+
+		grid.OnColumsAndRowsCleared += delegate(int count) {
+			if (OnColumsAndRowsCleared != null)
+				OnColumsAndRowsCleared (count);
+		};
 	}
 
 	bool CheckForDrag(Draggable drag){
@@ -80,7 +85,7 @@ public class GamePlayMaster : MonoBehaviour {
 			blocksContainer.PopulateBlocks ();
 		else {
 			if (ValidateBlocks () == false) {
-				Invoke ("Reset", 1);
+				Master.Instance.NoPlayAvailable ();
 			}
 		}
 	}
@@ -89,4 +94,6 @@ public class GamePlayMaster : MonoBehaviour {
 		grid.ClearAll ();
 		blocksContainer.PopulateBlocks ();
 	}
+
+	public System.Action<int> OnColumsAndRowsCleared;
 }
