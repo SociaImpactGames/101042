@@ -11,3 +11,5 @@ EditorBuildSettings:
     path: Assets/_Scenes/Home.unity
   - enabled: 1
     path: Assets/_Scenes/Game_1Player.unity
+  - enabled: 1
+    path: Assets/_Scenes/Game_2Players.unity
