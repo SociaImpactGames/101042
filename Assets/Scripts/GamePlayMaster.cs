@@ -6,7 +6,6 @@ public class GamePlayMaster : MonoBehaviour {
 	public BoxGrid grid;
 	public BlocksContainer blocksContainer;
 
-
 	void Start () {
 		grid.PopulateGrid ();
 		blocksContainer.onDragEnded += CheckForDrag;
@@ -17,6 +16,10 @@ public class GamePlayMaster : MonoBehaviour {
 		};
 	}
 
+	public void EnableDragging(bool _enable){
+		blocksContainer.EnableDragging (_enable);
+	}
+
 	bool CheckForDrag(Draggable drag){
 		BlockGroup group = drag.GetComponent<BlockGroup> ();
 
@@ -25,10 +28,11 @@ public class GamePlayMaster : MonoBehaviour {
 
 		foreach(DropZone d in group.GetAnyBlock().draggable.dropZones){
 			if(CanDropHere(group, d)){
-				DropHere (group, d);
-
-				blocksContainer.blocks.Remove (group);
-				Destroy (drag.gameObject);
+				if (OnSuccessfulDrag != null) {
+					OnSuccessfulDrag (group, d);
+				} else {
+					DropHere (group, d);
+				}
 
 				DoneDragging ();
 				return true;
@@ -72,28 +76,41 @@ public class GamePlayMaster : MonoBehaviour {
 	}
 
 	// Refactor
-	void DropHere(BlockGroup group, DropZone dropenOn){
+	public void DropHere(BlockGroup group, DropZone dropenOn, bool WithAnimation = false){
 		BoxCell cellDropenOn = dropenOn.GetComponent<BoxCell>();
 		foreach (var position in group.positions) {
 			(grid.GetCell (cellDropenOn.coord + position) as BoxCell).SetColor (group.color);
 		}
+
+		blocksContainer.blocks.Remove (group);
+		Destroy (group.gameObject);
+
+		grid.ClearSolvedRowsAndColumns ();
 	}
 
 	void DoneDragging(){
-		grid.ClearSolvedRowsAndColumns ();
-		if (blocksContainer.blocks.Count == 0)
-			blocksContainer.PopulateBlocks ();
+		if (blocksContainer.blocks.Count == 0){
+			if (OnNoBlocksOnGround != null) {
+				OnNoBlocksOnGround ();
+			} else {
+				blocksContainer.PopulateRandomBlocks ();
+			}
+		}
 		else {
 			if (ValidateBlocks () == false) {
-				Master.Instance.NoPlayAvailable ();
+				if(OnBlocksOnGroundWithNoDropMatch != null){
+					OnBlocksOnGroundWithNoDropMatch ();
+				}
 			}
 		}
 	}
 
-	public void Reset(){
+	public void ClearBlocks(){
 		grid.ClearAll ();
-		blocksContainer.PopulateBlocks ();
 	}
 
 	public System.Action<int> OnColumsAndRowsCleared;
+	public System.Action<BlockGroup, DropZone> OnSuccessfulDrag;
+	public System.Action OnNoBlocksOnGround;
+	public System.Action OnBlocksOnGroundWithNoDropMatch;
 }

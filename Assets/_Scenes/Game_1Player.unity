@@ -857,7 +857,7 @@ MonoBehaviour:
   - {fileID: 1116464327}
   - {fileID: 405030968}
   - {fileID: 592685714}
-  Prefaps:
+  Prefabs:
   - {fileID: 117166, guid: ba912fe1edead4a789a8f77bbb863159, type: 2}
   - {fileID: 196676, guid: 7761b916cdced472c86bc1afd078b0d0, type: 2}
   - {fileID: 196676, guid: 6aebfbf72d3244d16ab681fc3b012e66, type: 2}

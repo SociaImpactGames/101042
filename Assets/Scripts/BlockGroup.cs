@@ -21,7 +21,6 @@ public class BlockGroup : MonoBehaviour {
 		int maxX = 0;
 		int maxY = 0;
 
-		draggable.IsDraggable = true;
 		for (int i = 0; i < positions.Length; i++) {
 			Coord position = positions [i];
 			GameObject go = Instantiate (BlockPrefap) as GameObject;
@@ -58,5 +57,9 @@ public class BlockGroup : MonoBehaviour {
 		if (blocks.Length > 0)
 			return blocks [0];
 		return null;
+	}
+
+	public void EnableDragging(bool _enable){
+		draggable.IsDraggable = _enable;
 	}
 }

@@ -23,12 +23,32 @@ public class Master : MonoBehaviour {
 	}
 
 	void Start () {
-		gamePlayMaster.blocksContainer.PopulateBlocks ();
+		NewBlockSet ();
+
+		gamePlayMaster.OnSuccessfulDrag += delegate(BlockGroup g, DropZone d) {
+			// FIXME : Networking
+			gamePlayMaster.DropHere(g, d, false);
+		};
+
+		gamePlayMaster.OnNoBlocksOnGround += delegate {
+			// FIXME : Networking
+			NewBlockSet();
+		};
+
+		gamePlayMaster.OnBlocksOnGroundWithNoDropMatch += delegate {
+			NoPlayAvailable ();
+		};
+	}
+
+	void NewBlockSet(){
+		gamePlayMaster.blocksContainer.PopulateRandomBlocks ();
+		gamePlayMaster.EnableDragging (true);
 	}
 
 	public void Reset(){
 		Score = 0;
-		gamePlayMaster.Reset ();
+		gamePlayMaster.ClearBlocks ();
+		gamePlayMaster.blocksContainer.PopulateRandomBlocks ();
 	}
 
 	public void AddScore(int add){
