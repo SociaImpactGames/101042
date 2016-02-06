@@ -30,4 +30,10 @@ MonoBehaviour:
   - PunPickupSimple
   - PunRespawn
   - RequestForPickupTimes
+  - PopulateBricksWithPrefaps
+  - ClearBlocks_RPC
+  - SetScore_RPC
+  - PopulateBricksWithPrefaps_RPC
+  - HideStartGameBtn_RPC
+  - DropBlocksOnDropZone_RPC
   DisableAutoOpenWizard: 1

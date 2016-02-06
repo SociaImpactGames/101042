@@ -109,6 +109,14 @@ public class GamePlayMaster : MonoBehaviour {
 		grid.ClearAll ();
 	}
 
+	public Coord CoordForDropZone(DropZone dropZone){
+		return dropZone.GetComponent<BoxCell> ().coord;
+	}
+
+	public DropZone DropZoneForCoord(Coord coord){
+		return grid.GetCell (coord).GetComponent<DropZone> ();
+	}
+
 	public System.Action<int> OnColumsAndRowsCleared;
 	public System.Action<BlockGroup, DropZone> OnSuccessfulDrag;
 	public System.Action OnNoBlocksOnGround;

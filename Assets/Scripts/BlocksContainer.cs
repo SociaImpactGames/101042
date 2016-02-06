@@ -52,4 +52,12 @@ public class BlocksContainer : MonoBehaviour {
 
 		return false;
 	}
+
+	public int GetBlockGroupID(BlockGroup g){
+		return blocks.IndexOf (g);
+	}
+
+	public BlockGroup GetBlockGroupByID(int id){
+		return blocks [id];
+	}
 }
