@@ -6,6 +6,7 @@ public class PlayersList : MonoBehaviour {
 	public List<Player> players;
 
 	public void AddPlayer(Player player){
+		player.transform.SetParent(transform, false);
 		players.Add (player);
 	}
 

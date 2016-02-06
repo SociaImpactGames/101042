@@ -24,12 +24,10 @@ public class Master : MonoBehaviour {
 		NewBlockSet ();
 
 		gamePlayMaster.OnSuccessfulDrag += delegate(BlockGroup g, DropZone d) {
-			// FIXME : Networking
 			gamePlayMaster.DropHere(g, d, false);
 		};
 
 		gamePlayMaster.OnNoBlocksOnGround += delegate {
-			// FIXME : Networking
 			NewBlockSet();
 		};
 

@@ -10,8 +10,6 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 	void Awake(){
 		gamePlayMaster = GetComponent<GamePlayMaster> ();
 
-		gamePlayMaster.OnColumsAndRowsCleared += AddScoreForTheCurrentPlayingPlayer;
-
 		gamePlayMaster.OnNoBlocksOnGround += delegate {
 			NewBlockSet ();
 		};
@@ -22,7 +20,7 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 	}
 
 	void Start(){
-		//FIXME : Create Players
+		PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
 	}
 		
 	public void StartGame(){
@@ -42,7 +40,7 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 	}
 
 	void AddScoreForTheCurrentPlayingPlayer(int count){
-		// FIXME
+		PhotonNetwork.player.AddScore (count);
 	}
 
 	[PunRPC]
@@ -51,8 +49,10 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 
 		if (info.sender == PhotonNetwork.player) {
 			gamePlayMaster.EnableDragging (false);
+			gamePlayMaster.OnColumsAndRowsCleared -= AddScoreForTheCurrentPlayingPlayer;
 		} else {
 			gamePlayMaster.EnableDragging (true);
+			gamePlayMaster.OnColumsAndRowsCleared += AddScoreForTheCurrentPlayingPlayer;
 		}
 	}
 
