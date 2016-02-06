@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TwoPlayersMaster : Photon.PunBehaviour {
 	public PlayersList PlayerList;
-	public GameObject StartBtn;
+	public GameObject StartPanel;
 
 	GamePlayMaster gamePlayMaster;
 
@@ -80,7 +80,7 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 
 	[PunRPC]
 	void HideStartGameBtn_RPC(){
-		StartBtn.SetActive (false);
+		StartPanel.SetActive (false);
 	}
 
 	void DropBlocksOnDropZone(BlockGroup g, DropZone d){
