@@ -38,6 +38,9 @@ public class GamePlayMaster : MonoBehaviour {
 				return true;
 			}
 		}
+		if (OnFailDrag != null)
+			OnFailDrag (group);
+
 		return false;
 	}
 
@@ -82,6 +85,9 @@ public class GamePlayMaster : MonoBehaviour {
 			(grid.GetCell (cellDropenOn.coord + position) as BoxCell).SetColor (group.color);
 		}
 
+		if (OnSuccessfulDrop != null)
+			OnSuccessfulDrop (group, dropenOn);
+		
 		blocksContainer.blocks.Remove (group);
 		Destroy (group.gameObject);
 
@@ -117,8 +123,10 @@ public class GamePlayMaster : MonoBehaviour {
 		return grid.GetCell (coord).GetComponent<DropZone> ();
 	}
 
-	public System.Action<int, int> OnColumsAndRowsCleared;
-	public System.Action<BlockGroup, DropZone> OnSuccessfulDrag;
-	public System.Action OnNoBlocksOnGround;
-	public System.Action OnBlocksOnGroundWithNoDropMatch;
+	public event System.Action<int, int> OnColumsAndRowsCleared;
+	public event System.Action<BlockGroup, DropZone> OnSuccessfulDrag;
+	public event System.Action<BlockGroup, DropZone> OnSuccessfulDrop;
+	public event System.Action<BlockGroup> OnFailDrag;
+	public event System.Action OnNoBlocksOnGround;
+	public event System.Action OnBlocksOnGroundWithNoDropMatch;
 }

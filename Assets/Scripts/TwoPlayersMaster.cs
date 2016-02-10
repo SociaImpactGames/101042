@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class TwoPlayersMaster : Photon.PunBehaviour {
@@ -6,6 +7,10 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 	public GameObject StartPanel;
 
 	GamePlayMaster gamePlayMaster;
+
+	public Text TimerText;
+	public int SessionTime = 10;
+	int timer;
 
 	void Awake(){
 		gamePlayMaster = GetComponent<GamePlayMaster> ();
@@ -27,7 +32,7 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 		if(PhotonNetwork.playerList.Length != 2)
 			return;
 		
-		HideStartGameBtn ();
+		StartGameUI ();
 		PlayerList.ResetScores();
 		ClearBlocksForAllPlayers ();
 
@@ -51,9 +56,13 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 		if (info.sender == PhotonNetwork.player) {
 			gamePlayMaster.EnableDragging (false);
 			gamePlayMaster.OnColumsAndRowsCleared -= AddScoreForTheCurrentPlayingPlayer;
+
+			StopTimer ();
 		} else {
 			gamePlayMaster.EnableDragging (true);
 			gamePlayMaster.OnColumsAndRowsCleared += AddScoreForTheCurrentPlayingPlayer;
+
+			StartTimer ();
 		}
 	}
 
@@ -62,8 +71,13 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 	}
 
 	void GameOver(){
-		// FIXME
-		// Show Score Panel
+		photonView.RPC ("GameOver_RPC", PhotonTargets.All);
+	}
+
+	[PunRPC]
+	void GameOver_RPC(){
+		if (OnGameOver != null)
+			OnGameOver ();
 	}
 
 	public void ClearBlocksForAllPlayers(){
@@ -75,12 +89,12 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 		gamePlayMaster.ClearBlocks ();
 	}
 
-	void HideStartGameBtn(){
-		photonView.RPC ("HideStartGameBtn_RPC", PhotonTargets.All);
+	void StartGameUI(){
+		photonView.RPC ("StartGameUI_RPC", PhotonTargets.All);
 	}
 
 	[PunRPC]
-	void HideStartGameBtn_RPC(){
+	void StartGameUI_RPC(){
 		StartPanel.SetActive (false);
 	}
 
@@ -96,4 +110,36 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 		DropZone d = gamePlayMaster.DropZoneForCoord (new Coord(dX, dY));
 		gamePlayMaster.DropHere (g, d, info.sender != PhotonNetwork.player);
 	}
+
+	public void QuitSession(){
+		PhotonNetwork.Disconnect ();
+		UnityEngine.SceneManagement.SceneManager.LoadScene ("Home");
+	}
+
+	void StartTimer(){
+		timer = SessionTime;
+		TimerText.text = timer + "";
+		Invoke ("TimerTick", 1);
+	}
+
+	void StopTimer(){
+		CancelInvoke ("TimerTick");
+		TimerText.text = "";
+	}
+
+	void TimerTick(){
+		timer--;
+		TimerText.text = timer + "";
+
+		if (OnTimerTick != null)
+			OnTimerTick (timer);
+
+		if (timer == 0)
+			NewBlockSet ();
+		else
+			Invoke ("TimerTick", 1);
+	}
+
+	public event System.Action OnGameOver;
+	public event System.Action<int> OnTimerTick;
 }

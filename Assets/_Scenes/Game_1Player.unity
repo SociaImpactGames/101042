@@ -451,7 +451,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1413089125}
   m_Father: {fileID: 0}
   m_RootOrder: 1
 --- !u!114 &964363468
@@ -811,6 +812,50 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1393665450}
+--- !u!1 &1413089124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1413089125}
+  - 114: {fileID: 1413089126}
+  m_Layer: 0
+  m_Name: SoundController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1413089125
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1413089124}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 964363467}
+  m_RootOrder: 0
+--- !u!114 &1413089126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1413089124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743c384f5120847068ab0a384a1925df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SuccessfulDrag: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  FailDrag: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+  ClearCell: {fileID: 8300000, guid: 0994c12e202f342459a4212e7287f7e8, type: 3}
+  grid: {fileID: 1590833391}
+  gamePlay: {fileID: 964363468}
 --- !u!1 &1420612478
 GameObject:
   m_ObjectHideFlags: 0

@@ -44,7 +44,7 @@ public class Master : MonoBehaviour {
 	public void Reset(){
 		Score = 0;
 		gamePlayMaster.ClearBlocks ();
-		gamePlayMaster.blocksContainer.PopulateRandomBlocks ();
+		NewBlockSet ();
 	}
 
 	public void AddScore(int add){
