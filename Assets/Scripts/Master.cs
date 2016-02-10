@@ -15,8 +15,8 @@ public class Master : MonoBehaviour {
 
 	void Awake(){
 		gamePlayMaster = GetComponent<GamePlayMaster> ();
-		gamePlayMaster.OnColumsAndRowsCleared += delegate(int count) {
-			AddScore(count);
+		gamePlayMaster.OnColumsAndRowsCleared += delegate(int ColCount, int RowCount) {
+			AddScore(ScoreManager.GetTotalScore(ColCount, RowCount));
 		};
 	}
 

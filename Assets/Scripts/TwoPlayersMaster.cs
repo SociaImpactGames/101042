@@ -39,8 +39,9 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 		photonView.RPC("PopulateBricksWithPrefaps_RPC", PhotonTargets.All, indices);
 	}
 
-	void AddScoreForTheCurrentPlayingPlayer(int count){
-		PhotonNetwork.player.AddScore (count);
+	void AddScoreForTheCurrentPlayingPlayer(int ColCount, int RowCount){
+		PhotonNetwork.player.AddScore (ScoreManager.GetTotalScore(ColCount, RowCount));
+
 	}
 
 	[PunRPC]

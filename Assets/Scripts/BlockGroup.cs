@@ -50,7 +50,7 @@ public class BlockGroup : MonoBehaviour {
 		GetComponent<BoxCollider2D> ().offset = new Vector2 (maxX * 0.5f, maxY * 0.5f);
 		maxX++;
 		maxY++;
-		GetComponent<BoxCollider2D> ().size = new Vector2 (maxX, maxY);
+		GetComponent<BoxCollider2D> ().size = Vector2.one * 4;//new Vector2 (maxX, maxY);
 	}
 
 	public Block GetAnyBlock(){

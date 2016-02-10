@@ -10,9 +10,9 @@ public class GamePlayMaster : MonoBehaviour {
 		grid.PopulateGrid ();
 		blocksContainer.onDragEnded += CheckForDrag;
 
-		grid.OnColumsAndRowsCleared += delegate(int count) {
+		grid.OnColumsAndRowsCleared += delegate(int ColCount, int RowCount) {
 			if (OnColumsAndRowsCleared != null)
-				OnColumsAndRowsCleared (count);
+				OnColumsAndRowsCleared (ColCount, RowCount);
 		};
 	}
 
@@ -117,7 +117,7 @@ public class GamePlayMaster : MonoBehaviour {
 		return grid.GetCell (coord).GetComponent<DropZone> ();
 	}
 
-	public System.Action<int> OnColumsAndRowsCleared;
+	public System.Action<int, int> OnColumsAndRowsCleared;
 	public System.Action<BlockGroup, DropZone> OnSuccessfulDrag;
 	public System.Action OnNoBlocksOnGround;
 	public System.Action OnBlocksOnGroundWithNoDropMatch;
