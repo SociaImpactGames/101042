@@ -1232,6 +1232,8 @@ public static class PhotonNetwork
             return false;
         }
 
+		PhotonServerSettings.AppID = SecretSettings.GetPhotonAppID ();
+
         SwitchToProtocol(PhotonServerSettings.Protocol);
         networkingPeer.SetApp(PhotonServerSettings.AppID, gameVersion);
 
