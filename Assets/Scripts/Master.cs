@@ -49,6 +49,7 @@ public class Master : MonoBehaviour {
 
 	public void AddScore(int add){
 		Score += add;
+		ScoreManager.SetHighScore (score, ScoreManager.VER_ONE_PLAYER);
 	}
 
 	public void NoPlayAvailable(){

@@ -46,7 +46,7 @@ public class TwoPlayersMaster : Photon.PunBehaviour {
 
 	void AddScoreForTheCurrentPlayingPlayer(int ColCount, int RowCount){
 		PhotonNetwork.player.AddScore (ScoreManager.GetTotalScore(ColCount, RowCount));
-
+		ScoreManager.SetHighScore (PhotonNetwork.player.GetScore(), ScoreManager.VER_TWO_PLAYERs);
 	}
 
 	[PunRPC]

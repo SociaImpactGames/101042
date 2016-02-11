@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
@@ -12,10 +13,15 @@ public class HomeMaster : MonoBehaviour {
 	RoomNetworkMaster roomNetwork;
 	public static HomeMaster Instance;
 
+	public Text OnePlayerHighScore;
+	public Text TwoPlayersHighScore;
+
 	void Awake(){
 		Instance = this;
 		ShowHomePanel ();
 		roomNetwork = GetComponent<RoomNetworkMaster> ();
+
+		ResetHighScores ();
 	}
 
 	public void StartOnePlayerGame(){
@@ -59,5 +65,10 @@ public class HomeMaster : MonoBehaviour {
 		JoinRoomUIPanel.SetActive (false);
 
 		panel.SetActive (true);
+	}
+
+	void ResetHighScores (){
+		OnePlayerHighScore.text = "" + ScoreManager.GetHighScore (ScoreManager.VER_ONE_PLAYER);
+		TwoPlayersHighScore.text = "" + ScoreManager.GetHighScore (ScoreManager.VER_TWO_PLAYERs);
 	}
 }
